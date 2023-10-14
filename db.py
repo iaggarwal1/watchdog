@@ -2,12 +2,14 @@ import pandas as pd
 # import scipy
 # from scipy import stats
 # from scipy.stats import zscore
-relevant_columns = ['NIBRS Code Name', 'Report Date', 'Location', 'Victim Count', 'Crime Against', 'Was a firearm involved?']
+relevant_columns = ['NIBRS Code Name', 'Report Date', 'Location', 'Victim Count', 'Crime Against', 'Was a firearm involved?', 'Longitude', 'Latitude']
 
-crimeReport = pd.read_csv('https://services3.arcgis.com/Et5Qfajgiyosiw4d/arcgis/rest/services/CrimeDataExport_2_view/FeatureServer/replicafilescache/CrimeDataExport_2_view_2616402427573203146.csv')
-crimeReport = crimeReport[relevant_columns][len(crimeReport)-20:]
+# crimeReport = pd.read_csv('https://services3.arcgis.com/Et5Qfajgiyosiw4d/arcgis/rest/services/CrimeDataExport_2_view/FeatureServer/replicafilescache/CrimeDataExport_2_view_2616402427573203146.csv')
+crimeReport = pd.read_csv('./maps/COMPLETEDATA.csv')
+NUM_ENTRIES = len(crimeReport) - 3
+crimeReport = crimeReport[relevant_columns][len(crimeReport)-NUM_ENTRIES:]
 crimeReport['Victim Count'].fillna(0, inplace=True)
-
+#SOMETHING IS WRONG WITH THE PAIRING OF THE CRIMES WITH THEIR RESPECTIVE SCORES
 #ordered dictionary of crimes based on severity (referenced https://bjs.ojp.gov/library/publications/severity-crime-0)
 severity = {
     "Murder & Nonnegligent Manslaughter" : 10,
@@ -58,9 +60,13 @@ for crime in crimeReport['NIBRS Code Name']:
 firearm_scores = [0 if firearm == 'N' else 1 for firearm in crimeReport['Was a firearm involved?']]
 victim_scores = [victim/10 if type(victim) == int else 0 for victim in crimeReport['Victim Count']]
 factor = 0.333
-composite_scores = [factor * (severe_scores[i] + firearm_scores[i] + victim_scores[i]) for i in range(20)]
+composite_scores = [factor * (severe_scores[i] + firearm_scores[i] + victim_scores[i]) for i in range(NUM_ENTRIES)]
+crimeReport['Severity Score'] = composite_scores
 
-print(composite_scores)
+#Generating a file
+crimeReport.to_csv('StFullCrimeData.csv', index=False)
+
+print(crimeReport)
 
 
 
