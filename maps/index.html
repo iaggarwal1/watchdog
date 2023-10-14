@@ -12,7 +12,8 @@
   </head>
   <body>
     <h1>Embed Map Test</h1>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box"/>
+    <input id="pac-input1" class="controls" type="text" placeholder="Search Box"/>
+    <input id="pac-input2" class="controls" type="text" placeholder="Search Box"/>
     <div id="map"></div>
     <!-- defer -> executes script after entire HTML document has been parsed -->
     <!-- API Key: AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U -->
@@ -22,7 +23,7 @@
       defer
     ></script> -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&callback=initMap&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&libraries=places&callback=initMap&v=weekly"
       defer
     ></script>
   </body>
