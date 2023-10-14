@@ -9,7 +9,7 @@ def landing_page():
 
 @app.route('/home')
 def home_page():
-    return render_template("home.html")
+    return render_template("index.html")
 
 # @app.route('/crime_points')
 # def crime_points():
