@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <title>Watchdog</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script type="module" src="./index.js"></script>
+    <!-- Modules are treated like functions that can be called and accessed by other pieces of code; 
+    they can't be accessed from a file system but rather need to be run through a server; Live Server -->
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold text-white" href="#">WATCHDOG</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-white" aria-current="page" href="#">MAP</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-white" href="#">REPORTS</a>
+              </li>
+          </div>
+        </div>
+      </nav>
+
+    
+    <input id="pac-input1" class="mt-2 ms-3 w-25 controls form-control" type="text" placeholder="Enter Current Location"/><br>
+
+    <input id="pac-input2" class="mt-2 ms-3 w-25 controls form-control" type="text" placeholder="Enter Destination"/><br>
+    <div class="btn-group ms-3" role="group" aria-label="Basic radio toggle button group">
+        <input value="WALKING" type="radio" class="btn-check" name="mode" id="btnradio1" autocomplete="off" checked>
+        <label class="btn btn-outline-secondary" for="btnradio1">Walking</label>
+      
+        <input value="BICYCLING" type="radio" class="btn-check" name="mode" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="btnradio2">Bicycling</label>
+      
+        <input value="DRIVING" type="radio" class="btn-check" name="mode" id="btnradio3" autocomplete="off">
+        <label class="btn btn-outline-secondary" for="btnradio3">Driving</label>
+    </div>
+
+    <div class="mt-2 ms-3">
+    <button class="btn btn-primary" id="generate" type="submit" role="button">Get Directions</button><br/>
+    </div>
+    <!-- role = screen reader accessibility -->
+    
+    <div id="map"></div>
+    <!-- defer -> executes script after entire HTML document has been parsed -->
+    <!-- API Key: AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U -->
+    <!-- https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&callback=initMap&v=weekly -->
+    <!-- <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&callback=initMap&libraries=visualization,places&v=weekly"
+      defer
+    ></script> -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&libraries=places&callback=initMap&v=weekly"
+      defer
+    ></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
