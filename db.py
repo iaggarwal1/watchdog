@@ -1,12 +1,12 @@
 import pandas as pd
-import scipy
-from scipy import stats
-from scipy.stats import zscore
+# import scipy
+# from scipy import stats
+# from scipy.stats import zscore
+relevant_columns = ['NIBRS Code Name', 'Report Date', 'Location', 'Victim Count', 'Crime Against', 'Was a firearm involved?']
 
-crimeReport = pd.read_csv('CrimeDataExportedVersion1.csv')
-crimeReport = crimeReport[len(crimeReport)-20:]
-
-#crimeReportNormal = pd.read_csv('CrimeDataExportedVersion1.csv')
+crimeReport = pd.read_csv('https://services3.arcgis.com/Et5Qfajgiyosiw4d/arcgis/rest/services/CrimeDataExport_2_view/FeatureServer/replicafilescache/CrimeDataExport_2_view_-4522010479978906068.csv')
+crimeReport = crimeReport[relevant_columns][len(crimeReport)-20:]
+crimeReport['Victim Count'].fillna(0, inplace=True)
 
 #ordered dictionary of crimes based on severity (referenced https://bjs.ojp.gov/library/publications/severity-crime-0)
 severity = {
@@ -49,36 +49,18 @@ severity = {
     "Theft From Coin-Operated Machine or Device" : 1
 }
 
-crimeType = list(crimeReport['NIBRS Code Name'])
 severe_scores = []
-
-for crime in crimeType:
+for crime in crimeReport['NIBRS Code Name']:
     if crime not in severity:
         severity[crime] = 5
     severe_scores.append(severity[crime]/10.0) #norm
 
-firearmPresent = list(crimeReport['Was a firearm involved?'])
-firearm_scores = []
-
-for firearm in firearmPresent:
-    if firearm == 'N':
-        firearm_scores.append(0)
-    else:
-        firearm_scores.append(1)
-
-
-
-numOfVictims = list(crimeReport['Victim Count'])
-victim_scores = []
-
-for victim in numOfVictims:
-    victim_scores.append(victim/10)
-
-composite_score = []
+firearm_scores = [0 if firearm == 'N' else 1 for firearm in crimeReport['Was a firearm involved?']]
+victim_scores = [victim/10 if type(victim) == int else 0 for victim in crimeReport['Victim Count']]
 factor = 0.333
-for i in range(len(20)):
-    composite_score.append(factor*(severe_scores[i] + firearm_scores[i] + victim_scores[i]))
+composite_scores = [factor * (severe_scores[i] + firearm_scores[i] + victim_scores[i]) for i in range(20)]
 
+print(composite_scores)
 
 
 
