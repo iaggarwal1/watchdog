@@ -1,40 +1,93 @@
-const Navbar = () => {
+"use client";
+
+import {
+  Box,
+  Flex,
+  Avatar,
+  HStack,
+  Text,
+  IconButton,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  useDisclosure,
+  useColorModeValue,
+  Stack,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+const Links = ["WATCHDOG", "MAP", "REPORTS"];
+
+const NavLink = (props: Props) => {
+  const { children } = props;
+
   return (
-    <>
-      <nav className="navbar bg-dark navbar-expand-lg">
-        <div className="container-fluid">
-          <a className="navbar-brand text-white" href="#">
-            WATCHDOG
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link text-white" aria-current="page" href="#">
-                  MAP
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link text-white" href="#">
-                  REPORTS
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </>
+    <Box
+      as="a"
+      px={2}
+      py={1}
+      rounded={"md"}
+      _hover={{
+        textDecoration: "none",
+        bg: useColorModeValue("#1c1b1b", "gray.700"),
+      }}
+      href={"#"}
+    >
+      {children}
+    </Box>
   );
 };
 
-export default Navbar;
+export default function Simple() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <>
+      <Box bg={useColorModeValue("#353232", "gray.900")} px={4}>
+        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          <IconButton
+            size={"md"}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
+            onClick={isOpen ? onClose : onOpen}
+          />
+          <HStack
+            fontWeight={"bold"}
+            color={"white"}
+            as={"nav"}
+            display={{ base: "none", md: "flex" }}
+          >
+            <NavLink key={Links[0]}>{Links[0]}</NavLink>
+          </HStack>
+          <HStack
+            fontWeight={"bold"}
+            color={"white"}
+            as={"nav"}
+            display={{ base: "none", md: "flex" }}
+          >
+            <NavLink key={Links[1]}>{Links[1]}</NavLink>
+            <NavLink key={Links[2]}>{Links[2]}</NavLink>
+          </HStack>
+        </Flex>
+
+        {isOpen ? (
+          <Box pb={4} display={{ md: "none" }}>
+            <Stack as={"nav"} spacing={4}>
+              {Links.map((link) => (
+                <NavLink key={link}>{link}</NavLink>
+              ))}
+            </Stack>
+          </Box>
+        ) : null}
+      </Box>
+    </>
+  );
+}
