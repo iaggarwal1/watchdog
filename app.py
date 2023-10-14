@@ -1,5 +1,5 @@
 import pandas as pd
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, render_template
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def home_page():
 # @app.route('/crime_points')
 # def crime_points():
 #     relevant_columns = ['NIBRS Code Name', 'Report Date', 'Location', 'Victim Count', 'Crime Against', 'Was a firearm involved?', 'x', 'y']
-#     crimeReport = pd.read.csv('CrimeData.csv')
+#     crimeReport = pd.read_csv('CrimeData.csv')
     # crimeReport = pd.read_csv('https://services3.arcgis.com/Et5Qfajgiyosiw4d/arcgis/rest/services/CrimeDataExport_2_view/FeatureServer/replicafilescache/CrimeDataExport_2_view_2616402427573203146.csv')
     #SOMETHING IS WRONG WITH THE SEVERITY SCORES (THEY ARE NOT MATCHING UP TO THEIR RESPECTIVE CRIME WHEN THE COLUMN IS ADDED)
     # crimeReport = crimeReport[relevant_columns][len(crimeReport)-20:]
