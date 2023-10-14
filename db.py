@@ -66,6 +66,8 @@ for firearm in firearmPresent:
     else:
         firearm_scores.append(1)
 
+
+
 numOfVictims = list(crimeReport['Victim Count'])
 victim_scores = []
 
@@ -75,7 +77,7 @@ for victim in numOfVictims:
 composite_score = []
 factor = 0.333
 for i in range(len(20)):
-    composite_score.append(factor*(severe_scores[i] + firearm_scores + victim_scores[i]))
+    composite_score.append(factor*(severe_scores[i] + firearm_scores[i] + victim_scores[i]))
 
 
 
