@@ -13,7 +13,7 @@ function initMap() {
   locationButton.textContent = "Pan to Current Location";
   locationButton.classList.add("custom-map-control-button");
     
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(locationButton);
+  map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
   locationButton.addEventListener("click", () => {
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -59,6 +59,7 @@ function initMap() {
   let destMarkers = [];
   // Listen for the event fired when the user selects a prediction and retrieve
   // more details for that place.
+  let prevBounds;
   searchBox1.addListener("places_changed", () => {
     const places1 = searchBox1.getPlaces();
 
@@ -73,6 +74,7 @@ function initMap() {
 
     // For each place, get the icon, name and location.
     const bounds = new google.maps.LatLngBounds();
+    prevBounds = bounds;
 
     places1.forEach((place) => {
       if (!place.geometry || !place.geometry.location) {
@@ -107,7 +109,6 @@ function initMap() {
     map.fitBounds(bounds);
   });
 
-
   searchBox2.addListener("places_changed", () => {
     const places2 = searchBox2.getPlaces();
 
@@ -121,7 +122,7 @@ function initMap() {
     destMarkers = [];
 
     // For each place, get the icon, name and location.
-    const bounds = new google.maps.LatLngBounds();
+    const bounds2 = new google.maps.LatLngBounds();
 
     places2.forEach((place) => {
       if (!place.geometry || !place.geometry.location) {
@@ -148,12 +149,61 @@ function initMap() {
       );
       if (place.geometry.viewport) {
         // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
+        bounds2.union(place.geometry.viewport);
       } else {
-        bounds.extend(place.geometry.location);
+        bounds2.extend(place.geometry.location);
       }
     });
-    map.fitBounds(bounds);
+    map.fitBounds(bounds2.union(prevBounds));
+  });
+
+  //PLACEHOLDER COORDINATES
+  // const sampleCoordinates = [
+  //   { lat: 37.772, lng: -122.214 },
+  //   { lat: 21.291, lng: -157.821 },
+  //   { lat: -18.142, lng: 178.431 },
+  //   { lat: -27.467, lng: 153.027 },
+  // ];
+
+  //POLYLINE ROUTE DRAWING
+  // const route = new google.maps.Polyline({
+  //   geodesic: true, //shorteset path
+  //   strokeColor: "#0000FF",
+  //   strokeOpacity: 1.0,
+  //   strokeWeight: 4,
+  //   map: map
+  // });
+
+  // document.getElementById("generate").addEventListener("click", () => {
+  //   const start = initMarkers[0].getPosition(); 
+  //   const end = destMarkers[0].getPosition();
+  //   const routePts = [{lat : start.lat(), lng : start.lng()}, {lat : end.lat(), lng : end.lng()}]
+  //   route.setPath(routePts);
+  // });
+
+  //DIRECTIONS SERVICE DRAWING
+  let directionsService = new google.maps.DirectionsService();
+  let directionsRenderer = new google.maps.DirectionsRenderer();
+  directionsRenderer.setMap(map);
+  document.getElementById("generate").addEventListener("click", () => {
+    const startLatLng = initMarkers[0].getPosition(); 
+    const endLatLng = destMarkers[0].getPosition();
+    // const routePts = [{lat : start.lat(), lng : start.lng()}, {lat : end.lat(), lng : end.lng()}]
+    // let start = document.getElementById("pac-input1").value;
+    // let end = document.getElementById("pac-input2").value;
+    
+    //Creating the request
+    let request = {
+      origin:startLatLng,
+      destination:endLatLng,
+      travelMode: document.getElementById("mode").value
+    }
+
+    directionsService.route(request, function(result, status){
+      if(status == "OK"){
+        directionsRenderer.setDirections(result)
+      }
+    })
   });
 }
 

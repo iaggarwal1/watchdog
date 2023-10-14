@@ -12,8 +12,19 @@
   </head>
   <body>
     <h1>Embed Map Test</h1>
-    <input id="pac-input1" class="controls" type="text" placeholder="Search Box"/>
-    <input id="pac-input2" class="controls" type="text" placeholder="Search Box"/>
+    <label for="pac-input1">Start</label><br>
+    <input id="pac-input1" class="controls" type="text" placeholder="Search Box"/><br>
+    <label for="pac-input1">End</label><br>
+    <input id="pac-input2" class="controls" type="text" placeholder="Search Box"/><br>
+    <label for="mode">Mode</label><br>
+    <select name = "mode" id = "mode">
+      <option value = "WALKING">Walking</option>
+      <option value = "BICYCLING">Bicycling</option>
+      <option value = "DRIVING">Driving</option>
+    </select><br>
+    <button id="generate" type="submit" role="button">Generate Safe Route</button><br/>
+    <!-- role = screen reader accessibility -->
+    
     <div id="map"></div>
     <!-- defer -> executes script after entire HTML document has been parsed -->
     <!-- API Key: AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U -->
