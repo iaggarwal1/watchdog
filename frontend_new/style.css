@@ -5,11 +5,11 @@
  */
  #map {
     height: 90%;
-    width: 73%;
-    align-content: right;
-    position: relative;
-    left: 27%;
-    bottom: 34.8%;
+    width: 74%;
+    position: absolute;
+    right: 0;
+    top: 9%;
+
 }
   
   /* 

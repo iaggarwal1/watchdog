@@ -30,11 +30,25 @@
         </div>
       </nav>
 
-    
-    <input id="pac-input1" class="mt-2 ms-3 w-25 controls form-control" type="text" placeholder="Enter Current Location"/><br>
+    <div class="input-group mt-2 ms-1 w-25">
+      <input id="pac-input1" class="controls form-control" type="text" placeholder="Enter Current Location"/>
+      <span class="input-group-text bg-white">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-crosshair" viewBox="0 0 16 16">
+          <path d="M8.5.5a.5.5 0 0 0-1 0v.518A7.001 7.001 0 0 0 1.018 7.5H.5a.5.5 0 0 0 0 1h.518A7.001 7.001 0 0 0 7.5 14.982v.518a.5.5 0 0 0 1 0v-.518A7.001 7.001 0 0 0 14.982 8.5h.518a.5.5 0 0 0 0-1h-.518A7.001 7.001 0 0 0 8.5 1.018V.5Zm-6.48 7A6.001 6.001 0 0 1 7.5 2.02v.48a.5.5 0 0 0 1 0v-.48a6.001 6.001 0 0 1 5.48 5.48h-.48a.5.5 0 0 0 0 1h.48a6.002 6.002 0 0 1-5.48 5.48v-.48a.5.5 0 0 0-1 0v.48A6.001 6.001 0 0 1 2.02 8.5h.48a.5.5 0 0 0 0-1h-.48ZM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+        </svg>
+      </span>
+    </div>
 
-    <input id="pac-input2" class="mt-2 ms-3 w-25 controls form-control" type="text" placeholder="Enter Destination"/><br>
-    <div class="btn-group ms-3" role="group" aria-label="Basic radio toggle button group">
+    <div class="input-group mt-2 ms-1 w-25">
+      <input id="pac-input2" class="controls form-control" type="text" placeholder="Enter Destination"/>
+      <span class="input-group-text bg-white">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+          <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+        </svg>
+      </span>
+    </div>
+
+    <div class="btn-group mt-2 ms-2" role="group" aria-label="Basic radio toggle button group">
         <input value="WALKING" type="radio" class="btn-check" name="mode" id="btnradio1" autocomplete="off" checked>
         <label class="btn btn-outline-secondary" for="btnradio1">Walking</label>
       
@@ -45,12 +59,14 @@
         <label class="btn btn-outline-secondary" for="btnradio3">Driving</label>
     </div>
 
-    <div class="mt-2 ms-3">
+    <div class="mt-2 ms-2">
     <button class="btn btn-primary" id="generate" type="submit" role="button">Get Directions</button><br/>
     </div>
+
+
     <!-- role = screen reader accessibility -->
     
-    <div id="map"></div>
+    <div id="map">
     <!-- defer -> executes script after entire HTML document has been parsed -->
     <!-- API Key: AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U -->
     <!-- https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&callback=initMap&v=weekly -->
@@ -62,6 +78,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA73JensVhK-yWRu_714pyhDPd4NNlHL7U&libraries=places&callback=initMap&v=weekly"
       defer
     ></script>
+  </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
