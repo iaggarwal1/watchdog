@@ -4,7 +4,7 @@ import pandas as pd
 # from scipy.stats import zscore
 relevant_columns = ['NIBRS Code Name', 'Report Date', 'Location', 'Victim Count', 'Crime Against', 'Was a firearm involved?']
 
-crimeReport = pd.read_csv('https://services3.arcgis.com/Et5Qfajgiyosiw4d/arcgis/rest/services/CrimeDataExport_2_view/FeatureServer/replicafilescache/CrimeDataExport_2_view_-4522010479978906068.csv')
+crimeReport = pd.read_csv('https://services3.arcgis.com/Et5Qfajgiyosiw4d/arcgis/rest/services/CrimeDataExport_2_view/FeatureServer/replicafilescache/CrimeDataExport_2_view_2616402427573203146.csv')
 crimeReport = crimeReport[relevant_columns][len(crimeReport)-20:]
 crimeReport['Victim Count'].fillna(0, inplace=True)
 
