@@ -1,6 +1,9 @@
 // import * as d3 from "d3"; -> does not work (why is reading from a csv weird in js)
 let map, infoWindow; 
 // var csv = require('jquery-csv'); -> does not work
+var heatmap = null;
+var showHeatmap = true;
+var showUnverified = false;
 
 function initMap() {
   var directionsRendererArr = [];
@@ -243,9 +246,63 @@ function initMap() {
             }
           }
         })
- 
       }
   });
+  generateHeatmap();
+  document.getElementById("heatMapToggle").addEventListener("click", () => {
+    showHeatmap = !showHeatmap;
+    generateHeatmap();
+  })
+  document.getElementById("flexSwitchCheckDefault").addEventListener("click", () => {
+    showUnverified = !showUnverified;
+    heatmap.setMap(null);
+    generateHeatmap();
+  })
+}
+
+function generateHeatmap(){
+  if (showHeatmap){
+    fetch('/static/STFULLCOMPDATA.csv')
+    .then(response => response.text())
+    .then(data => {
+      // 'data' contains the contents of the CSV file as a string
+      // You can now parse and work with the CSV data
+      // Example: Parse CSV to an array of objects
+      let points = []
+  
+      const csvArray = data.split('\n').map(row => row.split(','));
+      console.log(csvArray); //--> WORKS
+      for (let i = 1; i < csvArray.length; i++) {
+        points.push({location: new google.maps.LatLng(csvArray[i][7], csvArray[i][6]), weight: csvArray[i][8] * 3});
+      }
+      // console.log(points);
+      if (showUnverified){
+        
+        var lat = 33.78148;
+        var lng = -84.41378;
+        points.push({location: new google.maps.LatLng(lat, lng), weight: 1});
+        
+      }
+      // const cellValue = csvArray[0][2]; // "Bob"
+      // console.log('Cell Value:', cellValue);
+      heatmap = new google.maps.visualization.HeatmapLayer({
+        data: points,
+        map: map,
+        dissipating: true,
+        radius: 40,
+        opacity: 0.7,
+        maxIntensity: 10
+      });
+  
+      heatmap.setMap(heatmap.getMap());
+    })
+    .catch(error => console.error('Error:', error));
+  } else {
+    heatmap.setMap(null);
+  }
+
+}
+
 
 function generateHashes(rows, columns){
   const pathHashes = [];
@@ -279,95 +336,6 @@ function generateWaypoints(rows, columns, start, end, pathHashes){
     paths.push(path);
   }
   return paths;
-}
-
-  //HEAT MAP
-  // fetch("http://127.0.0.1:5500/crime_points", {
-  //       method: "get",
-  //       headers: {
-  //         Accept: "text/csv", //Specifying CSV data 
-  //         "Content-Type": "text/csv" 
-  //       },
-  //   }).then((response) => response.text()).then((csvData) => {
-  //       let points = [];
-  //       console.log(csvData);
-  //   })
-    
-    
-        // const csvData = d3.csv(csvData);
-        // const csvData = d3.csv("CrimeData.csv");
-        // const dataframe = csvData.map(row => ({
-        //   name: row.name,            0
-        //   dateTime: row.dateTime,    1
-        //   location: row.location,    2
-        //   victims: row.victims,      3
-        //   crimeAgainst: row.crimeAgainst,  4
-        //   firearm: row.firearm,    5
-        //   longitude: row.longitude,  6
-        //   latitude: row.latitude,  7
-        //   severity: row.severity   8
-        // })); //map function
-        // var dataframe = $.csv.toObjects("CrimeData.csv");
-        // const latCol = dataframe.map(row => row.latitude);
-        // const longCol = dataframe.map(row => row.longitude);
-        // const sevCol = dataframe.map(row => row.severity);
-        fetch('/static/STFULLCOMPDATA.csv')
-          .then(response => response.text())
-          .then(data => {
-            // 'data' contains the contents of the CSV file as a string
-            // You can now parse and work with the CSV data
-            // Example: Parse CSV to an array of objects
-            let points = []
-
-            const csvArray = data.split('\n').map(row => row.split(','));
-            console.log(csvArray); //--> WORKS
-            for (let i = 1; i < csvArray.length; i++) {
-              points.push({location: new google.maps.LatLng(csvArray[i][7], csvArray[i][6]), weight: csvArray[i][8] * 3});
-            }
-            console.log(points);
-            // const cellValue = csvArray[0][2]; // "Bob"
-            // console.log('Cell Value:', cellValue);
-            let heatmap = new google.maps.visualization.HeatmapLayer({
-              data: points,
-              map: map,
-              dissipating: true,
-              radius: 40,
-              opacity: 0.7,
-              maxIntensity: 10
-            });
-
-            document.getElementById('heatMapToggle').addEventListener("click", () => {
-              heatmap.setMap((heatmap.getMap() == null) ? map : null);
-            });
-            heatmap.setMap(heatmap.getMap());
-          })
-          .catch(error => console.error('Error:', error));
-
-
-        // for (let i = 0; i < dataframe.length; i++) {
-        //     points.push({location: new google.maps.LatLng(dataframe[i][7], dataframe[i][6]), weight: dataframe[i][8]});
-        // }
-        // console.log(points);
-        // heatmap = new google.maps.visualization.HeatmapLayer({
-        //   data: points,
-        //   map: map,
-        //   dissipating: true,
-        //   radius: 40,
-        //   opacity: 0.7,
-        //   maxIntensity: 10
-        // });
-
-
-        // document
-        //   .getElementById("toggle-heatmap")
-        //   .addEventListener("click", toggleHeatmap);
-    // }
-
-    // heatmap.setMap(heatmap.getMap());
-
-    // function toggleHeatmap() {
-    //   heatmap.setMap(heatmap.getMap() ? null : map);
-    // }
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
