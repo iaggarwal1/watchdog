@@ -216,6 +216,7 @@ function initMap() {
     ];
     
     for (var i=0; i < generatedWaypoints.length; i++){
+
       // Generate new requests
       let request = {
         origin:startLatLng,
@@ -224,37 +225,55 @@ function initMap() {
         provideRouteAlternatives: true,
         travelMode: document.querySelector('input[name="mode"]:checked').value,
       };
-      directionsService.route(request, function(result, status){ 
-        if(status == "OK"){
-          console.log(result);
-          for (var i =0; i < result.routes.length; i++){
-              //directionsService.route(result.routes, directionResults);
-              var directionsRenderer = new google.maps.DirectionsRenderer();
-              directionsRenderer.setDirections(result);
-              directionsRenderer.setRouteIndex(i);
-              directionsRenderer.setMap(map);
-              directionsRendererArr.push(directionsRenderer);
-            }
-        }
-      })
-      // Generate new renders
+  
+      // directionsService.route(request, function(result, status){ 
+      //   if(status == "OK"){
+      //     console.log(result);
+      //     for (var i =0; i < result.routes.length; i++){
+      //         //directionsService.route(result.routes, directionResults);
+      //         var directionsRenderer = new google.maps.DirectionsRenderer();
+      //         directionsRenderer.setDirections(result);
+      //         directionsRenderer.setRouteIndex(i);
+      //         directionsRenderer.setMap(map);
+      //         directionsRendererArr.push(directionsRenderer);
+      //       }
+      //   }
+      // })
       // setTimeout(function(){
-      //   directionsService.route(request, function(result, status){ 
-      //     if(status == "OK"){
-      //       //console.log(result.routes);
-      //       for (var i =0; i < result.routes.length; i++){
-      //       //   directionsService.route(result.routes, directionResults);
-      //           var directionsRenderer = new google.maps.DirectionsRenderer();
-      //           directionsRenderer.setDirections(result);
-      //           directionsRenderer.setRouteIndex(i);
-      //           directionsRenderer.setMap(map);
-      //           directionsRendererArr.push(directionsRenderer);
-      //         }
+      //   if (directionsRendererArr.length != 0){
+      //     for (var i=0; i<directionsRendererArr.length; i++){
+      //       directionsRendererArr[i].setMap(null);
       //     }
-      //   })
-      // }, 100);
+      //     directionsRendererArr.splice(0,directionsRendererArr.length);
+      //   }        
+      // }, 1000);
+      // Generate new renders
       
-    }
+        directionsService.route(request, function(result, status){ 
+          console.log(result);
+          if(status == "OK"){
+            //console.log(result.routes);
+            if (directionsRendererArr.length != 0){
+              for (var i=0; i<directionsRendererArr.length; i++){
+                directionsRendererArr[i].setMap(null);
+              }
+              directionsRendererArr.splice(0,directionsRendererArr.length);
+            } 
+            for (var i =0; i < result.routes.length; i++){
+              setTimeout(function(){
+            //   directionsService.route(result.routes, directionResults);
+                var directionsRenderer = new google.maps.DirectionsRenderer();
+                directionsRenderer.setDirections(result);
+                directionsRenderer.setRouteIndex(i);
+                directionsRenderer.setMap(map);
+                directionsRendererArr.push(directionsRenderer);
+              },500);
+              
+            }
+          }
+        })
+ 
+      }
   });
 
 function factorial(num) {
