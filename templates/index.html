@@ -29,14 +29,17 @@
             <li class="nav-item">
               <a class="nav-link fw-bold text-white" aria-current="page" href="./home">VIEW MAP</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link fw-bold text-white" href="./form">MAKE REPORT</a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
     </nav>
 
+    <div class="mt-2 ms-2 pb-1 w-25">
+      <h5 class="display-6 text-center">Create Route:</h5>
+    </div>
 
     <div class="input-group mt-2 ms-2 w-25">
       <span class="input-group-text bg-white">
@@ -99,6 +102,83 @@
         </div>
       </div>
     </div>
+    
+    <div class="ms-2 mt-4 w-25">
+      <form method="POST" action="/submit">
+        <legend class="text-center">Report A Crime Near You</legend>
+        <div class="form-floating mb-3">
+          <select class="form-select" id="crime" name="crime" aria-label="Floating label select example">
+            <option selected>Type of Crime</option>
+            <option value="Murder & Nonnegligent Manslaughter">Murder & Nonnegligent Manslaughter</option>
+            <option value="Kidnapping/Abduction">Kidnapping/Abduction</option>
+            <option value="Robbery">Robbery</option>
+            <option value="Aggravated Assault">Aggravated Assault</option>
+            <option value="Human Trafficking, Involuntary Servitude">Human Trafficking, Involuntary Servitude</option>
+            <option value="Human Trafficking, Commercial Sex Arts">Human Trafficking, Commercial Sex Arts</option>
+            <option value="Extortion/Blackmail">Extortion/Blackmail</option>
+            <option value="Arson">Arson</option>
+            <option value="Motor Vehicle Theft">Motor Vehicle Theft</option>
+            <option value="Identity Theft">Identity Theft</option>
+            <option value="Embezzlement">Embezzlement</option>
+            <option value="False Pretenses/Swindle/Confidence Game">False Pretenses/Swindle/Confidence Game</option>
+            <option value="Intimidation">Intimidation</option>
+            <option value="Burglary/Breaking & Entering">Burglary/Breaking & Entering</option>
+            <option value="All Other Larceny">All Other Larceny</option>
+            <option value="Destruction/Damage/Vandalism of Property">Destruction/Damage/Vandalism of Property</option>
+            <option value="Drug/Narcotic Violations">Drug/Narcotic Violations</option>
+            <option value="Credit Card/Automated Teller Machine Fraud">Credit Card/Automated Teller Machine Fraud</option>
+            <option value="Impersonation">Impersonation</option>
+            <option value="Shoplifting">Shoplifting</option>
+            <option value="Simple Assault">Simple Assault</option>
+            <option value="Stolen Property Offenses">Stolen Property Offenses</option>
+            <option value="Theft From Building">Theft From Building</option>
+            <option value="Theft From Motor Vehicle">Theft From Motor Vehicle</option>
+            <option value="Theft of Motor Vehicle Parts or Accessories">Theft of Motor Vehicle Parts or Accessories</option>
+            <option value="Pocket-picking">Pocket-picking</option>
+            <option value="Purse-snatching">Purse-snatching</option>
+            <option value="Prostitution">Prostitution</option>
+            <option value="Bribery">Bribery</option>
+            <option value="Counterfeiting/Forgery">Counterfeiting/Forgery</option>
+            <option value="Drug Equipment Violations">Drug Equipment Violations</option>
+            <option value="Hacking/Computer Invasion">Hacking/Computer Invasion</option>
+            <option value="Incest">Incest</option>
+            <option value="Animal Cruelty">Animal Cruelty</option>
+            <option value="Assisting or Promoting Prostitution">Assisting or Promoting Prostitution</option>
+            <option value="Pornography/Obscene Material">Pornography/Obscene Material</option>
+            <option value="Theft From Coin-Operated Machine or Device">Theft From Coin-Operated Machine or Device</option>
+          </select>
+          <label for="floatingSelect">Select category:</label>
+        </div>
+        <div class="row g-2 mb-3">
+          <div style="width:46%">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="victims" name="victims" placeholder="name@example.com">
+              <label for="floatingInput">No. Of Victims</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating">
+              <select class="form-select" id="firearms" name="firearms">
+                <option selected>Firearms Present</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+              <label for="floatingSelectGrid">Select category:</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="location" name="location" placeholder="name@example.com">
+          <label for="floatingInput">Location of Crime</label>
+        </div>
+
+        <div class="w-25 ms-auto">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    </div>
+
 
     <div id="map"></div>
     <!-- defer -> executes script after entire HTML document has been parsed -->

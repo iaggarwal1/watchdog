@@ -13,11 +13,11 @@ def landing_page():
 def home_page():
     return render_template("index.html")
 
-@app.route('/form')
-def index():
-    return render_template('form.html')
+# @app.route('/form')
+# def index():
+#     return render_template('form.html')
 
-csv_filename = "crime_data.csv"
+csv_filename = "unreported_crime_data.csv"
 if not os.path.exists(csv_filename):
     with open(csv_filename, "w", newline="") as csvfile:
         csv_writer = csv.writer(csvfile)
