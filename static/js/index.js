@@ -248,7 +248,35 @@ function initMap() {
             }
           }
         })
+        
       }
+      setTimeout(() => {if (directionsRendererArr.length != 0){
+        for (var i=0; i<directionsRendererArr.length; i++){
+          directionsRendererArr[i].setMap(null);
+        }
+        directionsRendererArr.splice(0,directionsRendererArr.length);
+      }} , 5000);
+      let request = {
+        origin:startLatLng,
+        destination:endLatLng,
+        provideRouteAlternatives: true,
+        travelMode: document.querySelector('input[name="mode"]:checked').value,
+      };
+      setTimeout(() => {
+      directionsService.route(request, function(best, status){ 
+        if(status == "OK"){
+          setTimeout(function(){
+        //   directionsService.route(result.routes, directionResults);
+            var directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setDirections(best);
+            directionsRenderer.setRouteIndex(1);
+            directionsRenderer.setMap(map);
+            directionsRendererArr.push(directionsRenderer);
+          },5000);
+          
+        }
+      }), 10000});
+
   });
   generateHeatmap();
   document.getElementById("heatMapToggle").addEventListener("click", () => {
@@ -264,14 +292,17 @@ function initMap() {
 
 function generateHeatmap(){
   if (showHeatmap){
-    fetch('/static/STFULLCOMPDATA.csv')
+    var points = [];
+    var url =  '/static/VERIFIEDDATA.csv';
+    if (showUnverified){
+      url = '/static/ALLDATA.csv';}
+    fetch(url)
     .then(response => response.text())
     .then(data => {
       // 'data' contains the contents of the CSV file as a string
       // You can now parse and work with the CSV data
       // Example: Parse CSV to an array of objects
-      let points = []
-  
+
       const csvArray = data.split('\n').map(row => row.split(','));
       console.log(csvArray); //--> WORKS
       for (let i = 1; i < csvArray.length; i++) {
