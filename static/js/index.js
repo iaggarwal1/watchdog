@@ -243,6 +243,30 @@ function initMap() {
     // }
   });
 
+function factorial(num) {
+  if (num === 0 || num === 1) {
+      return 1;
+  } else {
+      return num * factorial(num - 1);
+  }
+}
+
+function generateHashes(rows, columns){
+  var pathHashes = [];
+  for (var i=0; i < rows ** columns; i++){
+    // Convert to base rows
+    var pathHash = "";
+    while (i > 0){
+      curRow = i % rows
+      pathHash += curRow
+      i = Math.floor(i / rows);
+    }
+    pathHashes.push(pathHash);
+  }
+  return pathHashes;
+}
+
+
   //HEAT MAP
   // fetch("http://127.0.0.1:5500/crime_points", {
   //       method: "get",
