@@ -262,6 +262,10 @@ function initMap() {
               opacity: 0.7,
               maxIntensity: 10
             });
+
+            document.getElementById('heatMapToggle').addEventListener("click", () => {
+              heatmap.setMap((heatmap.getMap() == null) ? map : null);
+            });
             heatmap.setMap(heatmap.getMap());
           })
           .catch(error => console.error('Error:', error));
