@@ -7,6 +7,26 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bold text-white" href="./">WATCHDOG</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-white" aria-current="page" href="./home">VIEW MAP</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fw-bold text-white" href="./form">MAKE REPORT</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+
     <div class="container mt-5">
         <h1>Crime Information</h1>
         <form method="POST" action="/submit">

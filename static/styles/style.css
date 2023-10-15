@@ -37,5 +37,21 @@
     background: rgb(235, 235, 235);
   }
   
+.loc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#outer
+{
+    width:25%;
+}
+
+.inner
+{
+    display: inline-block;
+}
+
   /* [END maps_map_geolocation] */
   

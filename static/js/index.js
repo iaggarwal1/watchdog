@@ -198,7 +198,7 @@ function initMap() {
     let request = {
       origin:startLatLng,
       destination:endLatLng,
-      travelMode: document.getElementById("mode").value
+      travelMode: document.querySelector('input[name="mode"]:checked').value,
     }
 
     directionsService.route(request, function(result, status){
