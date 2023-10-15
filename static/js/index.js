@@ -51,6 +51,8 @@ function initMap() {
   const searchBox1 = new google.maps.places.SearchBox(input1);
   const input2 = document.getElementById("pac-input2");
   const searchBox2 = new google.maps.places.SearchBox(input2);
+  const input3 = document.getElementById("location");
+  const searchBox3 = new google.maps.places.SearchBox(input3);
 
   // Controls Position
   // map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
@@ -212,7 +214,7 @@ function initMap() {
     // Generate new paths
     var hashes = generateHashes(rows, columns);
     var generatedWaypoints = generateWaypoints(rows, columns, startLatLng, endLatLng, hashes);
-    
+
     for (var i=0; i < generatedWaypoints.length; i++){
 
       // Generate new requests
