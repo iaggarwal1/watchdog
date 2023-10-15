@@ -188,59 +188,73 @@ function initMap() {
   let directionsService = new google.maps.DirectionsService();
   let directionsRenderer = new google.maps.DirectionsRenderer();
   directionsRenderer.setMap(map);
+
+  //CONSTANTS
+  const rows = 3;
+  const columns = 3;
+
   document.getElementById("generate").addEventListener("click", () => {
+
     const startLatLng = initMarkers[0].getPosition(); 
     const endLatLng = destMarkers[0].getPosition();
-    // const routePts = [{lat : start.lat(), lng : start.lng()}, {lat : end.lat(), lng : end.lng()}]
-    // let start = document.getElementById("pac-input1").value;
-    // let end = document.getElementById("pac-input2").value;
-    
-    //Creating the request
-    let request = {
-      origin:startLatLng,
-      destination:endLatLng,
-      provideRouteAlternatives: true,
-      travelMode: document.querySelector('input[name="mode"]:checked').value,
-    }
-    
-    directionsService.route(request, function(result, status){
-      if(status == "OK"){
-        console.log(result.routes);
-        if (directionsRendererArr.length != 0){
-          for (var i=0; i<directionsRendererArr.length; i++){
-            directionsRendererArr[i].setMap(null);
-          }
-          directionsRendererArr.splice(0,directionsRendererArr.length);
 
-        }
-        for (var i =0; i < result.routes.length; i++){
-        //   directionsService.route(result.routes, directionResults);
-            var directionsRenderer = new google.maps.DirectionsRenderer();
-            directionsRenderer.setDirections(result);
-            directionsRenderer.setRouteIndex(i);
-            directionsRenderer.setMap(map);
-            directionsRendererArr.push(directionsRenderer);
-          }
-
-        // directionsService.route(request)
-        // directionsRenderer.setDirections(result);
-        // directionsRenderer.setDirections(result[0]);
-        // directionsRenderer.setDirections(result[1]);
-        // directionsRenderer.setDirections(result[2]);
+    // Clear previous renders
+    if (directionsRendererArr.length != 0){
+      for (var i=0; i<directionsRendererArr.length; i++){
+        directionsRendererArr[i].setMap(null);
       }
-    })
-    // var cur = 0;
-    // function directionResults(result, status){
-    //   console.log("mom");
+      directionsRendererArr.splice(0,directionsRendererArr.length);
+    }
 
-    //   if (status == google.maps.DirectionStatus.OK){
-    //     var renderArray = [];
-    //     renderArray[cur] = new google.maps.DirectionsRenderer();
-    //     renderArray[cur].setMap(map);
-    //     renderArray[cur].setDirections(result);
-    //     cur++;
-    //   }
-    // }
+    // Generate new paths
+    var hashes = generateHashes(rows, columns);
+    var generatedWaypoints = generateWaypoints(rows, columns, startLatLng, endLatLng, hashes);
+    const test2 = [
+      { location: new google.maps.LatLng(33.76546956, -84.45582209999999), stopover: false },
+      { location: new google.maps.LatLng(33.763366479999995, -84.44399279999999), stopover: false },
+      { location: new google.maps.LatLng(33.763366479999995, -84.4321635), stopover: false }
+    ];
+    
+    for (var i=0; i < generatedWaypoints.length; i++){
+      // Generate new requests
+      let request = {
+        origin:startLatLng,
+        destination:endLatLng,
+        waypoints: generatedWaypoints[i],
+        provideRouteAlternatives: true,
+        travelMode: document.querySelector('input[name="mode"]:checked').value,
+      };
+      directionsService.route(request, function(result, status){ 
+        if(status == "OK"){
+          console.log(result);
+          for (var i =0; i < result.routes.length; i++){
+              //directionsService.route(result.routes, directionResults);
+              var directionsRenderer = new google.maps.DirectionsRenderer();
+              directionsRenderer.setDirections(result);
+              directionsRenderer.setRouteIndex(i);
+              directionsRenderer.setMap(map);
+              directionsRendererArr.push(directionsRenderer);
+            }
+        }
+      })
+      // Generate new renders
+      // setTimeout(function(){
+      //   directionsService.route(request, function(result, status){ 
+      //     if(status == "OK"){
+      //       //console.log(result.routes);
+      //       for (var i =0; i < result.routes.length; i++){
+      //       //   directionsService.route(result.routes, directionResults);
+      //           var directionsRenderer = new google.maps.DirectionsRenderer();
+      //           directionsRenderer.setDirections(result);
+      //           directionsRenderer.setRouteIndex(i);
+      //           directionsRenderer.setMap(map);
+      //           directionsRendererArr.push(directionsRenderer);
+      //         }
+      //     }
+      //   })
+      // }, 100);
+      
+    }
   });
 
 function factorial(num) {
@@ -252,35 +266,38 @@ function factorial(num) {
 }
 
 function generateHashes(rows, columns){
-  var pathHashes = [];
+  const pathHashes = [];
   for (var i=0; i < rows ** columns; i++){
+    var j = i;
+    var idx = 0;
     // Convert to base rows
-    var pathHash = "";
-    while (i > 0){
-      curRow = i % rows
-      pathHash += curRow
-      i = Math.floor(i / rows);
+    var pathHash = Array(columns).fill(0);
+    while (j > 0){
+      pathHash[idx] = j % rows
+      j = Math.floor(j / rows);
+      idx++;
     }
     pathHashes.push(pathHash);
   }
+  console.log(pathHashes);
   return pathHashes;
 }
 
-function generateRoutes(rows, columns, start, end, pathHashes){
+function generateWaypoints(rows, columns, start, end, pathHashes){
   var latIncr = Math.abs(end.lat()- start.lat()) / (rows+2);
   var lngIncr = Math.abs(end.lng()- start.lng()) / (columns+2);
   var paths = []; // 
   for (var i = 0; i < pathHashes.length; i++){
+    var path = [];
     for (var j = 0; j < pathHashes[i].length; j++){
-        var pathLat = start.lat() + (pathHashes[i][j] + 1) * latIncr;
-        var pathLng = start.lng() + (j+1) * lngIncr; 
+        var pathLat = Math.min(start.lat(), end.lat()) + (pathHashes[i][j] + 1) * latIncr;
+        var pathLng = Math.min(start.lng(), end.lng()) + (j+1) * lngIncr; 
+        path.push({location: {lat: pathLat, lng: pathLng}, stopover: false});
     }
-    paths.push({lat: pathLat, lng: pathLng});
+    paths.push(path);
   }
   return paths;
 }
-
-
 
   //HEAT MAP
   // fetch("http://127.0.0.1:5500/crime_points", {
