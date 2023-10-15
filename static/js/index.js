@@ -3,6 +3,7 @@ let map, infoWindow;
 // var csv = require('jquery-csv'); -> does not work
 
 function initMap() {
+  var directionsRendererArr = [];
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: -34.397, lng: 150.644 },
     zoom: 13,
@@ -198,14 +199,48 @@ function initMap() {
     let request = {
       origin:startLatLng,
       destination:endLatLng,
+      provideRouteAlternatives: true,
       travelMode: document.querySelector('input[name="mode"]:checked').value,
     }
-
+    
     directionsService.route(request, function(result, status){
       if(status == "OK"){
-        directionsRenderer.setDirections(result)
+        console.log(result.routes);
+        if (directionsRendererArr.length != 0){
+          for (var i=0; i<directionsRendererArr.length; i++){
+            directionsRendererArr[i].setMap(null);
+          }
+          directionsRendererArr.splice(0,directionsRendererArr.length);
+
+        }
+        for (var i =0; i < result.routes.length; i++){
+        //   directionsService.route(result.routes, directionResults);
+            var directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setDirections(result);
+            directionsRenderer.setRouteIndex(i);
+            directionsRenderer.setMap(map);
+            directionsRendererArr.push(directionsRenderer);
+          }
+
+        // directionsService.route(request)
+        // directionsRenderer.setDirections(result);
+        // directionsRenderer.setDirections(result[0]);
+        // directionsRenderer.setDirections(result[1]);
+        // directionsRenderer.setDirections(result[2]);
       }
     })
+    // var cur = 0;
+    // function directionResults(result, status){
+    //   console.log("mom");
+
+    //   if (status == google.maps.DirectionStatus.OK){
+    //     var renderArray = [];
+    //     renderArray[cur] = new google.maps.DirectionsRenderer();
+    //     renderArray[cur].setMap(map);
+    //     renderArray[cur].setDirections(result);
+    //     cur++;
+    //   }
+    // }
   });
 
   //HEAT MAP
