@@ -209,11 +209,6 @@ function initMap() {
     // Generate new paths
     var hashes = generateHashes(rows, columns);
     var generatedWaypoints = generateWaypoints(rows, columns, startLatLng, endLatLng, hashes);
-    const test2 = [
-      { location: new google.maps.LatLng(33.76546956, -84.45582209999999), stopover: false },
-      { location: new google.maps.LatLng(33.763366479999995, -84.44399279999999), stopover: false },
-      { location: new google.maps.LatLng(33.763366479999995, -84.4321635), stopover: false }
-    ];
     
     for (var i=0; i < generatedWaypoints.length; i++){
 
@@ -225,30 +220,6 @@ function initMap() {
         provideRouteAlternatives: true,
         travelMode: document.querySelector('input[name="mode"]:checked').value,
       };
-  
-      // directionsService.route(request, function(result, status){ 
-      //   if(status == "OK"){
-      //     console.log(result);
-      //     for (var i =0; i < result.routes.length; i++){
-      //         //directionsService.route(result.routes, directionResults);
-      //         var directionsRenderer = new google.maps.DirectionsRenderer();
-      //         directionsRenderer.setDirections(result);
-      //         directionsRenderer.setRouteIndex(i);
-      //         directionsRenderer.setMap(map);
-      //         directionsRendererArr.push(directionsRenderer);
-      //       }
-      //   }
-      // })
-      // setTimeout(function(){
-      //   if (directionsRendererArr.length != 0){
-      //     for (var i=0; i<directionsRendererArr.length; i++){
-      //       directionsRendererArr[i].setMap(null);
-      //     }
-      //     directionsRendererArr.splice(0,directionsRendererArr.length);
-      //   }        
-      // }, 1000);
-      // Generate new renders
-      
         directionsService.route(request, function(result, status){ 
           console.log(result);
           if(status == "OK"){
@@ -275,14 +246,6 @@ function initMap() {
  
       }
   });
-
-function factorial(num) {
-  if (num === 0 || num === 1) {
-      return 1;
-  } else {
-      return num * factorial(num - 1);
-  }
-}
 
 function generateHashes(rows, columns){
   const pathHashes = [];
