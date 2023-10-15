@@ -266,6 +266,21 @@ function generateHashes(rows, columns){
   return pathHashes;
 }
 
+function generateRoutes(rows, columns, start, end, pathHashes){
+  var latIncr = Math.abs(end.lat()- start.lat()) / (rows+2);
+  var lngIncr = Math.abs(end.lng()- start.lng()) / (columns+2);
+  var paths = []; // 
+  for (var i = 0; i < pathHashes.length; i++){
+    for (var j = 0; j < pathHashes[i].length; j++){
+        var pathLat = start.lat() + (pathHashes[i][j] + 1) * latIncr;
+        var pathLng = start.lng() + (j+1) * lngIncr; 
+    }
+    paths.push({lat: pathLat, lng: pathLng});
+  }
+  return paths;
+}
+
+
 
   //HEAT MAP
   // fetch("http://127.0.0.1:5500/crime_points", {
